@@ -7,10 +7,12 @@ function App() {
   const [modal, setModal] = useState(false);
   const [modalTitle, setModalTitle] = useState(0);
   let [inputs, setInputs] = useState("");
+  const titleInput = useRef();
   const onReset = () => {
     setInputs("");
   };
-  const titleInput = useRef();
+  const time = new Date();
+
   return (
     <div className="App">
       <div className="black-nav">
@@ -39,7 +41,7 @@ function App() {
               </span>
               {좋아요[i]}
             </h4>
-            <p>시간</p>
+            <p>{time.toDateString()}</p>
             <button
               onClick={() => {
                 let copy = [...title];
@@ -64,7 +66,13 @@ function App() {
         }}
       ></input>
       <button
-        onClick={() => {
+        onClick={(e) => {
+          if (inputs === "") {
+            // 기본 이벤트 Prevent
+            e.preventDefault();
+            alert("글을 입력해주세요");
+            return; // onClick function 밖으로 나가기
+          }
           let copy = [...title];
           copy.unshift(inputs);
           setTitle(copy);
