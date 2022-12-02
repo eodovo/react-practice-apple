@@ -1,80 +1,79 @@
 import "./App.css";
 import Modal from "./Modal";
-import { useState } from "react";
+import { useRef, useState } from "react";
 function App() {
-  let [title, setTitle] = useState(["남자 코트 추천", "강남 우동 맛집", "파이썬 독학"]);
-  const [like, upLike] = useState(0);
-  const [좋아요, 좋아요함수] = useState(0);
-  const up = () => {
-    upLike((prev) => prev + 1);
-  };
-  const likeIt = () => {
-    좋아요함수((좋아요) => 좋아요 + 1);
-  };
-
+  let [title, setTitle] = useState(["html 공부", "css 공부", "리액트 독학"]);
+  const [좋아요, 좋아요함수] = useState([0, 0, 0]);
   const [modal, setModal] = useState(false);
-
+  const [modalTitle, setModalTitle] = useState(0);
+  let [inputs, setInputs] = useState("");
+  const onReset = () => {
+    setInputs("");
+  };
+  const titleInput = useRef();
   return (
     <div className="App">
       <div className="black-nav">
-        <h1>애플</h1>
+        <h1>할 일</h1>
       </div>
+
+      {title.map((a, i) => {
+        return (
+          <div className="list" key={i}>
+            <h4
+              onClick={() => {
+                setModal(!modal);
+                setModalTitle(i);
+              }}
+            >
+              {title[i]}
+              <span
+                onClick={(e) => {
+                  e.stopPropagation();
+                  let copy = [...좋아요];
+                  copy[i] += 1;
+                  좋아요함수(copy);
+                }}
+              >
+                👍
+              </span>
+              {좋아요[i]}
+            </h4>
+            <p>시간</p>
+            <button
+              onClick={() => {
+                let copy = [...title];
+                copy.splice(i, 1);
+                setTitle(copy);
+              }}
+            >
+              삭제
+            </button>
+          </div>
+        );
+      })}
+      {modal === true ? <Modal modalTitle={modalTitle} title={title} color="#ddd" /> : null}
+      {/* 모달 show & hide */}
+      <input
+        placeholder="할 일 적기"
+        ref={titleInput}
+        value={inputs}
+        type="text"
+        onChange={(e) => {
+          setInputs(e.target.value);
+        }}
+      ></input>
       <button
-        className="sort"
         onClick={() => {
-          let titleChange = [...title]; //스프레드문법(배열복사)
-          setTitle(titleChange.sort()); //가나다순 정렬
+          let copy = [...title];
+          copy.unshift(inputs);
+          setTitle(copy);
+          onReset();
+          titleInput.current.focus();
         }}
       >
-        제목 정렬
+        글발행
       </button>
-      <div className="list">
-        <h4
-          onClick={() => {
-            //h4를 클릭 했을 때 모달 show
-            setModal(!modal); //false값 반전
-          }}
-        >
-          {title[0]} <span>👍</span>
-          <button onClick={up}>{like}</button>
-          <br />
-          <button
-            onClick={() => {
-              let copy = [...title];
-              copy[0] = "여자 코트 추천";
-              setTitle(copy);
-            }}
-          >
-            제목 바꾸기!
-          </button>
-        </h4>
-
-        <p>2월 17일 발행</p>
-      </div>
-      <div className="list">
-        <h4>
-          {title[1]}
-          <span onClick={likeIt}>👍</span>
-          {좋아요}
-        </h4>
-        <p>2월 17일 발행</p>
-      </div>
-      <div className="list">
-        <h4>
-          {title[2]}
-          <span
-            onClick={() => {
-              좋아요함수(좋아요 + 1);
-            }}
-          >
-            👍
-          </span>
-          {좋아요}
-        </h4>
-        <p>2월 17일 발행</p>
-      </div>
-      {modal === true ? <Modal /> : null}
-      {/* 모달 show & hide */}
     </div>
   );
 }

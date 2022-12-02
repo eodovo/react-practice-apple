@@ -1,16 +1,37 @@
+h1 {
+  font-size: 30px;
+}
+
+h4,
+p,
+button {
+  text-align: center;
+  display: inline-block;
+}
 div {
   box-sizing: border-box;
+  width: 400px;
 }
+input {
+  width: 300px;
+}
+button {
+  margin-top: 20px;
+  float: right;
+}
+input + button {
+  width: 90px;
+  margin: 0;
+}
+
 .list {
-  text-align: left;
-  padding-left: 20px;
-  border-bottom: 1px solid grey;
+  border: 1px solid;
 }
 .black-nav {
   display: flex;
-  background: burlywood;
+  background: black;
   width: 100%;
-  color: royalblue;
+  color: #fff;
   padding-left: 20px;
   height: 100px;
   text-align: center;
@@ -25,6 +46,11 @@ div {
   background-color: blanchedalmond;
   text-align: center;
 }
-.sort {
-  float: right;
+#root {
+  position: relative;
+}
+.App {
+  position: absolute;
+  width: 400px;
+  left: 200%;
 }
